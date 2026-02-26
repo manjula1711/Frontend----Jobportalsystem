@@ -38,6 +38,7 @@ const MyJobs = () => {
 
   useEffect(() => {
     loadJobs();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // ✅ Pagination Logic
