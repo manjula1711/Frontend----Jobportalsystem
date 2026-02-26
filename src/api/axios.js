@@ -3,7 +3,7 @@ import axios from "axios";
 
 const api = axios.create({
   // baseURL: "http://localhost:8080/api",
-   baseURL:"https://jobportalsystem-4fu4.onrender.com",
+   baseURL:"https://jobportalsystem-4fu4.onrender.com/api",
 });
 
 // attach token automatically
