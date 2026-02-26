@@ -36,15 +36,17 @@ const MyApplications = () => {
     load();
   }, []);
 
+  // ✅ Updated formatDate
   const formatDate = (dateString) => {
     if (!dateString) return "—";
     const date = new Date(dateString);
-    return date.toLocaleString("en-IN", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
+    return date.toLocaleString("en-US", {
+      month: "short",   // Feb
+      day: "2-digit",   // 27
+      hour: "2-digit",  // 12
+      minute: "2-digit",// 33
+      hour12: true,     // AM/PM
+      timeZone: "Asia/Kolkata" // convert UTC to IST
     });
   };
 
@@ -56,30 +58,16 @@ const MyApplications = () => {
     return "bg-gray-100 text-gray-800";
   };
 
-  // ✅ Pagination Logic
   const totalPages = Math.ceil(applications.length / applicationsPerPage);
-
   const indexOfLastApp = currentPage * applicationsPerPage;
   const indexOfFirstApp = indexOfLastApp - applicationsPerPage;
   const currentApps = applications.slice(indexOfFirstApp, indexOfLastApp);
 
   const goToPage = (page) => {
-    if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
-    }
+    if (page >= 1 && page <= totalPages) setCurrentPage(page);
   };
-
-  const nextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage((prev) => prev + 1);
-    }
-  };
-
-  const prevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage((prev) => prev - 1);
-    }
-  };
+  const nextPage = () => { if (currentPage < totalPages) setCurrentPage((prev) => prev + 1); };
+  const prevPage = () => { if (currentPage > 1) setCurrentPage((prev) => prev - 1); };
 
   return (
     <DashboardLayout role="SEEKER">
@@ -119,27 +107,17 @@ const MyApplications = () => {
                       key={app.id}
                       className="border-t text-sm hover:bg-gray-50"
                     >
-                      <td className="p-4 font-medium">
-                        {app?.job?.title || "—"}
-                      </td>
-                      <td className="p-4">
-                        {app?.job?.companyName || "—"}
-                      </td>
-                      <td className="p-4">
-                        {app?.job?.location || "—"}
-                      </td>
+                      <td className="p-4 font-medium">{app?.job?.title || "—"}</td>
+                      <td className="p-4">{app?.job?.companyName || "—"}</td>
+                      <td className="p-4">{app?.job?.location || "—"}</td>
                       <td className="p-4">
                         <span
-                          className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(
-                            app.status
-                          )}`}
+                          className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(app.status)}`}
                         >
                           {String(app.status || "PENDING").toUpperCase()}
                         </span>
                       </td>
-                      <td className="p-4">
-                        {formatDate(app.appliedDate)}
-                      </td>
+                      <td className="p-4">{formatDate(app.appliedDate)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -148,38 +126,13 @@ const MyApplications = () => {
           )
         )}
 
-        {/* ✅ Pagination Controls */}
         {totalPages > 1 && (
           <div className="flex justify-center items-center gap-2 mt-6 flex-wrap">
-            <button
-              onClick={prevPage}
-              disabled={currentPage === 1}
-              className="px-3 py-2 rounded bg-gray-200 disabled:opacity-50"
-            >
-              Prev
-            </button>
-
+            <button onClick={prevPage} disabled={currentPage === 1} className="px-3 py-2 rounded bg-gray-200 disabled:opacity-50">Prev</button>
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-              <button
-                key={p}
-                onClick={() => goToPage(p)}
-                className={`px-4 py-2 rounded ${
-                  currentPage === p
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                }`}
-              >
-                {p}
-              </button>
+              <button key={p} onClick={() => goToPage(p)} className={`px-4 py-2 rounded ${currentPage === p ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700 hover:bg-gray-300"}`}>{p}</button>
             ))}
-
-            <button
-              onClick={nextPage}
-              disabled={currentPage === totalPages}
-              className="px-3 py-2 rounded bg-gray-200 disabled:opacity-50"
-            >
-              Next
-            </button>
+            <button onClick={nextPage} disabled={currentPage === totalPages} className="px-3 py-2 rounded bg-gray-200 disabled:opacity-50">Next</button>
           </div>
         )}
       </div>
