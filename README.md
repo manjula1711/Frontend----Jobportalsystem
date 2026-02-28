@@ -1,6 +1,6 @@
 # Getting Started with Create React App
 # DEPLOYMENT LINK
-https://frontend-jobportalsystem.vercel.app/my-applications
+https://frontend-jobportalsystem.vercel.app/
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
